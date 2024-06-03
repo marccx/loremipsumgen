@@ -7,9 +7,9 @@ export const Input = ({amount,inputType,onInputChange}) => {
       case "select":
         return (
           <select className="form-select" aria-label="Default select example" value={amount} onChange={onInputChange} >
-            <option value="paragraphs">Paragraphs</option>
             <option value="words">Words</option>
-            <option value="lines">Lines</option>
+            <option value="sentences">Sentences</option>
+            <option value="paragraphs">Paragraphs</option>
           </select>
         );
       case "submit":
