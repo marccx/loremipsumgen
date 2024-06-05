@@ -2,15 +2,29 @@ import { useState } from "react";
 import "./App.css";
 import { GeneratedText } from "./Components/GeneratedText";
 import { Input } from "./Components/Input";
+import { CopyBtn } from "./Components/CopyBtn";
 
+function randomIntFromInterval(min, max) {
+  // min and max included
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 function App() {
-  function randomIntFromInterval(min, max) {
-    // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min);
+  let [params, setParams] = useState({
+    inputValue: 5,
+    type: "paragraphs",
+  });
+  let [copyText, setCopyText] = useState("Copy to Clipboard");
+
+  function changeCopyText() {
+    setCopyText("Copied");
+
+    setTimeout(() => {
+      setCopyText("Copy to Clipboard");
+    }, 1200);
   }
 
   const words = [
-    "Lorem",
+    "lorem",
     "ipsum",
     "dolor",
     "sit",
@@ -29,7 +43,7 @@ function App() {
     "dolore",
     "magna",
     "aliqua",
-    "Donec",
+    "donec",
     "odio",
     "pellentesque",
     "diam",
@@ -38,33 +52,33 @@ function App() {
     "leo",
     "urna",
     "molestie",
-    "Gravida",
+    "gravida",
     "neque",
     "convallis",
     "a",
     "cras",
     "semper",
     "auctor",
-    "Nisi",
+    "nisi",
     "vitae",
     "suscipit",
     "tellus",
     "mauris",
-    "Nisl",
+    "nisl",
     "tincidunt",
     "eget",
     "nullam",
     "non",
     "est",
     "facilisis",
-    "Purus",
+    "purus",
     "enim",
     "praesent",
     "elementum",
     "blandit",
     "volutpat",
     "maecenas",
-    "Porta",
+    "porta",
     "mollis",
     "aliquam",
     "porttitor",
@@ -75,7 +89,7 @@ function App() {
     "quam",
     "quisque",
     "id",
-    "Commodo",
+    "commodo",
     "aenean",
     "nunc",
     "massa",
@@ -88,7 +102,7 @@ function App() {
     "cursus",
     "in",
     "hac",
-    "Euismod",
+    "euismod",
     "pulvinar",
     "habitant",
     "tristique",
@@ -101,7 +115,7 @@ function App() {
     "velit",
     "dignissim",
     "sodales",
-    "Libero",
+    "libero",
     "consequat",
     "interdum",
     "ornare",
@@ -118,11 +132,11 @@ function App() {
     "fermentum",
     "faucibus",
     "integer",
-    "Sapien",
+    "sapien",
     "ullamcorper",
     "nibh",
     "nam",
-    "Ultricies",
+    "ultricies",
     "tortor",
     "at",
     "eleifend",
@@ -134,7 +148,7 @@ function App() {
     "lacus",
     "laoreet",
     "ultrices",
-    "Feugiat",
+    "feugiat",
     "sagittis",
     "fringilla",
     "duis",
@@ -145,7 +159,7 @@ function App() {
     "vestibulum",
     "condimentum",
     "lacinia",
-    "Scelerisque",
+    "scelerisque",
     "imperdiet",
     "venenatis",
     "cum",
@@ -155,7 +169,7 @@ function App() {
     "penatibus",
     "magnis",
     "dis",
-    "Vulputate",
+    "vulputate",
     "luctus",
     "accumsan",
     "pharetra",
@@ -168,7 +182,7 @@ function App() {
     "congue",
     "lobortis",
     "metus",
-    "Habitasse",
+    "habitasse",
     "platea",
     "dictumst",
     "rhoncus",
@@ -176,41 +190,34 @@ function App() {
     "dapibus",
     "iaculis",
     "eros",
-    "Ante",
+    "ante",
     "ligula",
     "rutrum",
-    "Ridiculus",
+    "ridiculus",
     "mus",
     "parturient",
     "montes",
     "nascetur",
     "potenti",
   ];
-
-  let [params, setParams] = useState({
-    amount: 2,
-    type: "paragraphs",
-  });
   const handleChange = (e) => {
-    setParams({ ...params, amount: e.target.value });
+    setParams({ ...params, inputValue: e.target.value });
   };
   const handleChangeType = (e) => {
     setParams({ ...params, type: e.target.value });
   };
-  function clearResult() {
-    setResult([]);
-  }
+
   function pushToResult(element) {
     setResult((a) => [...a, element]);
   }
 
   function generateLorem() {
-    clearResult();
+    setResult([]);
     let genWords = "";
     switch (params.type) {
       // WORDS CASE
       case "words":
-        for (let i = 0; i < params.amount; i++) {
+        for (let i = 0; i < params.inputValue; i++) {
           // let randomNum = Math.floor(Math.random() * words.length);
           let randomNum = randomIntFromInterval(0, words.length - 1);
           genWords = genWords + " " + words[randomNum].toLowerCase();
@@ -219,8 +226,8 @@ function App() {
         break;
       // SENTENCES CASE
       case "sentences":
-        for (let i = 0; i < params.amount; i++) {
-          let seqWords = Math.floor(Math.random() * (20 - 15 + 1) + 15);
+        for (let i = 0; i < params.inputValue; i++) {
+          let seqWords = randomIntFromInterval(15, 20);
           for (let j = 0; j < seqWords; j++) {
             let randomNum = randomIntFromInterval(0, words.length - 1);
             genWords = genWords + " " + words[randomNum];
@@ -231,7 +238,7 @@ function App() {
         break;
       //  PARAGRAPHS CASE
       case "paragraphs":
-        for (let x = 0; x < params.amount; x++) {
+        for (let x = 0; x < params.inputValue; x++) {
           let parag = "";
           // 5 Sentences
           for (let i = 0; i < 5; i++) {
@@ -248,7 +255,7 @@ function App() {
         break;
       //  DEFAULT CASE
       default:
-        for (let i = 0; i < params.amount; i++) {
+        for (let i = 0; i < params.inputValue; i++) {
           let randomNum = randomIntFromInterval(0, words.length - 1);
           genWords = genWords + " " + words[randomNum];
         }
@@ -265,11 +272,11 @@ function App() {
       <div className="container">
         <div className="row">
           <div className="col-md-12">
-            <h1 className="mb-5 mt-5">Lorem Ipsum Text Generator</h1>
+            <h1 className="website-title">Lorem Ipsum Text Generator</h1>
             <div className="form-group">
               <Input
                 inputType={"number"}
-                amount={params.amount}
+                amount={params.inputValue}
                 onInputChange={handleChange}
               />
               <Input
@@ -278,14 +285,7 @@ function App() {
                 onInputChange={handleChangeType}
               />
               <Input inputType={"submit"} onInputChange={generateLorem} />
-              <button
-                className="btn btn-secondary"
-                onClick={() => {
-                  navigator.clipboard.writeText(result);
-                }}
-              >
-                Copy Text
-              </button>
+              <CopyBtn onInputChange={changeCopyText} textValue={copyText} />
             </div>
             <GeneratedText genText={result} />
           </div>
